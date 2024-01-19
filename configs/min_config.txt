@@ -55,6 +55,7 @@ server{
             alias     /documents/;
             methods   GET POST;
             postdir   /postfiles/;
+            try_files index.html index.htm;
         }
         location      /pepe/juan{
             root      jeje;

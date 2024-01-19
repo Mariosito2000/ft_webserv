@@ -115,7 +115,7 @@ int	main(int argc, char **argv) {
         std::cerr << "Inaccessible file" << std::endl;
         return 1; }
 	
-	std::vector<int>	sockVec;
+	
 	struct sockaddr_in	addr;
 	//struct sockaddr_in	client_addr;
 	//int					client_len;
@@ -133,21 +133,29 @@ int	main(int argc, char **argv) {
 	{
 		if (http->childs[i]->contextName == "server")
 			servers.push_back(http->childs[i]);
-	} 
+	}
+	//std::vector<int>	ports;
 	//Socket del servidor
+	t_ports	ports;
+	int	id;
+	ports.n = 0;
 	for (size_t i = 0; i < servers.size(); i++)
 	{
-		int	port;
-		std::vector<std::string>	values;
-		if (!getValue(servers[i]->directives, "listen", &values))
+		
+		std::string	*value = getMultiMapValue(servers[i]->directivesMap, "listen");
+		if (!value)
 			return (3);
-		port = atoi(values[0].c_str());
-		std::cout << "Port de server " << i << " es: " << port << std::endl;
-		sockVec.push_back(getServerSocket(&addr, port));
-		std::cout << "Socket de servidor " << i << " es: " << sockVec.back() << std::endl;
-		bindAndListen(sockVec[i], &addr);
+		//if (!getValue(servers[i]->directives, "listen"))
+		//	return (3);
+		id = atoi(value->c_str());
+		ports.id.push_back(id);
+		std::cout << "Port de server " << i << " es: " << id << std::endl;
+		ports.fd.push_back(getServerSocket(&addr, id));
+		std::cout << "Socket de servidor " << i << " es: " << ports.fd.back() << std::endl;
+		bindAndListen(ports.fd[i], &addr);
+		ports.n++;
 	}
-	pollEvents(servers, sockVec);	
-	return 0;
+	pollEvents(servers, &ports);	
+	return (0);
 }
 

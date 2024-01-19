@@ -51,7 +51,7 @@ std::string	defaultErrorPath(int error)
 	return (errorPath);
 }
 
-std::string	getErrorPath(bTreeNode *server, struct client *client, int error)
+std::string	getErrorPath(struct client *client, int error)
 {
 	char		buf[1000];
 	std::string	absPath = getcwd(buf, 1000);
@@ -59,13 +59,13 @@ std::string	getErrorPath(bTreeNode *server, struct client *client, int error)
 
 	std::cout << "---------Hubo error: " << error << " , mandar error path--------" << std::endl;
 	//mirar si en config hay ficheros de error redirigidos
-	bTreeNode	*loc = findLocation(server, client->request.url);
+	bTreeNode	&loc = *(client->loc);
 	typedef std::multimap<std::string, std::string>::iterator itm;
 	
-	itm it = loc->directivesMap.find("error_files");
-	if (it != loc->directivesMap.end())
+	itm it = loc.directivesMap.find("error_files");
+	if (it != loc.directivesMap.end())
 	{
-		std::pair<itm, itm> itr = loc->directivesMap.equal_range("error_files");
+		std::pair<itm, itm> itr = loc.directivesMap.equal_range("error_files");
 		std::cout << "Encuentra error_files en location" << std::endl;
 		for (itm ib = itr.first, ie = itr.second; ib != ie; ib++)
 		{
@@ -85,12 +85,12 @@ std::string	getErrorPath(bTreeNode *server, struct client *client, int error)
 	return (errorPath);
 }
 
-std::string	getErrorResponse(bTreeNode *server, struct client *client, int error)
+std::string	getErrorResponse(struct client *client, int error)
 {
 	std::string	resp;
 	std::string	path;
 
-	path = getErrorPath(server, client, error);
+	path = getErrorPath(client, error);
 	std::string body = getResponseBody(path);
 	resp = getResponseHeader(client->request, body) + body;
 	return (resp);

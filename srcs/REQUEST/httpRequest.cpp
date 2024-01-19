@@ -14,12 +14,12 @@ void	loadRequest(HttpRequest *request)
     size_t urlLength = line.find(' ', methodLength + 1);
     if (methodLength != std::string::npos && urlLength != std::string::npos) {
         //request->method = line.substr(0, methodLength);
-		std::string method = line.substr(0, methodLength);
-		std::cout << "Method a evaluar: " << method << std::endl;
+		request->method = line.substr(0, methodLength);
+		std::cout << "Method a evaluar: " << request->method << std::endl;
 		std::string methods[] = {"GET", "POST", "PUT", "DELETE"};
 		for (int i = 0; i < 4; i++)
 		{
-			if (methods[i] == method)
+			if (methods[i] == request->method)
 				request->method_int = i;
 		}
 		std::cout << "Id de method: " << request->method_int << std::endl;
@@ -246,9 +246,9 @@ int	readEvent(struct client *client)
 		return (1);
 	}
 	if (bytes_read == 0) {
-		//std::cout << "[[CLOSE]]" << std::endl;
-		close(client->fd);
-		return (1);
+		/*//std::cout << "[[CLOSE]]" << std::endl;
+		close(cli->ident);*/
+		return (0);
 	}
 	buf[bytes_read] = '\0';
 	//CONCATENAR LO LEÍDO AL BUFFER ANTERIOR SI HABÍA ALGO

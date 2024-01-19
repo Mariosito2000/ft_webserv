@@ -303,11 +303,11 @@ int	cmpLocUrl(std::string &loc, std::string &url)
 	return (0);
 }
 
-bTreeNode	*findLocation(bTreeNode *server, std::string &URL)
+bTreeNode	*findLocation(struct client *client)
 {
 	bTreeNode	*loc = NULL;
-
-	std::cout << "URL a comparar: " << URL << std::endl;
+	bTreeNode	*server = client->server;
+	std::cout << "URL a comparar: " << client->request.url << std::endl;
 	for (size_t i = 0; i < server->childs.size(); i++)
 	{
 		loc = server->childs[i];
@@ -315,10 +315,10 @@ bTreeNode	*findLocation(bTreeNode *server, std::string &URL)
 		std::cout << "Len de location: " <<  loc->contextArgs[0].length() << std::endl;
 		//if (!match_loc_url(loc->contextArgs[0].c_str(), URL.c_str()))
 		//if (URL.compare(0, loc->contextArgs[0].length(), loc->contextArgs[0]) == 0)
-		if (!cmpDirectories(loc->contextArgs[0], URL))
+		if (!cmpDirectories(loc->contextArgs[0], client->request.url))
 		//if (!cmpLocUrl(loc->contextArgs[0], URL))
 		{
-			std::cout << "Hace match de la URL: " << loc->contextArgs[0] << " y " << URL << std::endl;
+			std::cout << "Hace match de la URL: " << loc->contextArgs[0] << " y " << client->request.url << std::endl;
 			return (loc);
 		}
 	}

@@ -47,7 +47,7 @@ typedef struct	context{
 	short								_type;
 	short								_op;
 	std::vector<std::string>			_args;
-	std::map<std::string, std::string>	dirs;
+	std::map<std::string, std::string>	_dirs;
 } context;
 
 
@@ -66,7 +66,17 @@ typedef struct bTreeNode
 	std::vector<bTreeNode*>		childs; //punteros a los hijos
 } bTreeNode;
 
-struct HttpRequest {
+struct HttpResponse {
+	std::string firstLine; //method, version
+    std::string body; //if empty, content-length
+	std::string	response;
+    //std::map<std::string, std::string> headers;
+	size_t	bytesSent;
+
+	//constructor y métodos
+};
+
+typedef struct HttpRequest {
 	std::string	buf;
 	size_t		bufLen;
 	std::string	header;
@@ -81,14 +91,22 @@ struct HttpRequest {
 	bool	cgi;
 	std::map<std::string, std::string>	cookies;
 	int status;
-};
+} HttpRequest;
 
-struct client {
+typedef struct s_ports{
+	std::vector<int>	id; // id del puerto
+	std::vector<int>	fd; //fd del socket asociado a ese puerto
+	size_t				n;
+} t_ports ;
+
+typedef struct client {
     int fd;
-	int	serverID;
+	int	portID; //port id
 	int	state; // 0 - tiene que leer header, 1 - tiene que leer body, 2 - tiene que escribir
-	bTreeNode *server; //que cada cliente tenga un puntero a su servidor, para no tener que pasarlo como parametro por funciones
-	HttpRequest request;
+	bTreeNode 	*server; //que cada cliente tenga un puntero a su servidor, para no tener que pasarlo como parametro por funciones
+	HttpRequest 	request;
+	HttpResponse	response;
+	bTreeNode	*loc;
 	bool operator==(struct client const &cmp) const
 	{
 		if (this->fd == cmp.fd)
@@ -96,15 +114,9 @@ struct client {
 		return (0);
 	}
 	//server *SocketServer;
-};
+} client;
 
-struct HttpResponse {
-	std::string firstLine; //method, version
-    std::string body; //if empty, content-length
-    //std::map<std::string, std::string> headers;
 
-	//constructor y métodos
-};
 
 class	clientQueue {
 
@@ -163,9 +175,9 @@ bTreeNode	*parseFile(char	*file);
 //tree funcs - find, search
 
 void		findNode(bTreeNode *root, bTreeNode **find_node, std::string find);
-bTreeNode	*findLocation(bTreeNode *server, std::string	&URL);
+bTreeNode	*findLocation(struct client *client);
 bool		findFile(std::string &dirFind, std::string &file);
-bool		getValue(std::vector<std::pair<std::string, std::vector<std::string> > > keyValues, std::string key, std::vector<std::string>	*values_out);
+std::string *getMultiMapValue(std::multimap<std::string, std::string> &map, std::string key);
 
 //socket funcs
 
@@ -181,7 +193,7 @@ int	cmpDirectives(void *loc, void *cmp);
 //--HTTP REQUEST---
 int		readEvent(struct client *client);
 //int		readEvent(clientQueue &Queue, struct kevent *client, struct kevent *client_event, int kq);
-void	writeEvent(bTreeNode *server, struct client *client);
+int		writeEvent(struct client *client);
 //void	writeEvent(bTreeNode *server, clientQueue &Queue, int ident, struct kevent *client_event, int kq);
 //HttpRequest loadRequest(char *buffer);
 void		loadRequest(HttpRequest *request);
@@ -190,7 +202,7 @@ std::string getResponseBody(std::string fileToReturn);
 std::string	getStatus(int status);
 std::string getResponseHeader(HttpRequest &currentRequest, std::string &body);
 std::string GetResponse(bTreeNode	*server, std::string &url);
-std::string ResponseToMethod(bTreeNode *server, client *client);
+std::string ResponseToMethod(client *client);
 
 //HTTP METHODS
 int		callMultiPart(struct client *client, std::string &path);
@@ -202,7 +214,7 @@ void	postUrlEncoded(std::string &route, const char *body, size_t size);
 void 	setNonBlocking(int fd);
 int		getServerSocket(sockaddr_in *addr, int port);
 void	bindAndListen(int sock, sockaddr_in *addr);
-int		pollEvents(std::vector<bTreeNode *> servers, std::vector<int>	&sockets);
+int		pollEvents(std::vector<bTreeNode *> &servers, t_ports *ports);
 
 //---CGI---
 std::string getCgi(std::string script);
@@ -210,5 +222,5 @@ std::string	CGIForward(std::string &path);
 
 //ERRORS
 std::string	getStatus(int status);
-std::string	getErrorPath(bTreeNode *server, struct client *client, int error);
-std::string	getErrorResponse(bTreeNode *server, struct client *client, int error);
+std::string	getErrorPath(struct client *client, int error);
+std::string	getErrorResponse(struct client *client, int error);

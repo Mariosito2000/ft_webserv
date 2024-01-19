@@ -35,16 +35,22 @@ std::string getResponseBody(std::string fileToReturn) {
 	return (fileLine);
 }
 
-void	writeEvent(bTreeNode *server, struct client *client)
+int	writeEvent(struct client *client)
 {
 	std::cout << "---WRITE EVENT---" << std::endl;
-	std::string finalRequest  = ResponseToMethod(server, client);
+	//std::string finalRequest  = ResponseToMethod(server, client);
 	
 	//size_t requestLength = strlen(finalRequest.c_str());
-	size_t requestLength = finalRequest.size();
-	size_t bytes_sent = 0;
-	//std::cout << "RESPONSE IS: " << finalRequest << std::endl;
-	while (bytes_sent < requestLength)
-		bytes_sent += send(client->fd, finalRequest.c_str(), requestLength, MSG_DONTWAIT);
-	client->state = -1;
+	size_t responseLen = client->response.response.size();
+	std::cout << "LEN DE RESPONSE: " << responseLen << std::endl;
+	//std::cout << "RESPONSE IS: " << client->response.response << std::endl;
+	//while (bytes_sent < requestLength)
+	client->response.bytesSent += send(client->fd, client->response.response.c_str(), responseLen, MSG_DONTWAIT);
+	std::cout << "ENVIADO: " << client->response.bytesSent << std::endl;
+	if (client->response.bytesSent == responseLen)
+	{
+		client->state = -1;
+		return (1);
+	}
+	return (0);
 }
