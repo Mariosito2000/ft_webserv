@@ -106,31 +106,39 @@ int	readHeader(struct client *client)
 		//std::cout << "Guardó bien el header" << std::endl;
 		client->request.bufLen -= lim + 4;
 		//std::cout << "Header: " << client->request.header << std::endl;
-		//RESTO
-		//std::cout << "Bodylen: " << client->request.bufLen << std::endl;
-		std::string	body;
-		body.reserve(client->request.bufLen);
-		//std::cout << "Donde tiene que empezar: " << lim + 4 << std::endl;
-		for (size_t i = 0, j = lim + 4; i < client->request.bufLen; i++, j++)
+		if (client->request.chunked)
 		{
-			body[i] = client->request.buf[j];
-			////std::cout << "j: " << j << std::endl;
-			////std::cout << client->request.buf[j];
+			
 		}
-		//std::cout << std::endl;
-		//std::cout << "Guardó bien el resto" << std::endl;
-		//std::cout << "Resto: " << std::endl;
-		//for (int i = 0; i < client->request.bufLen; i++)
-			//std::cout << body[i];
-		//std::cout << std::endl;
-		//client->request.buf.clear();
-		client->request.buf.reserve(client->request.bufLen);
-		for (size_t i = 0; i < client->request.bufLen; i++)
-			client->request.buf[i] = body[i];
-		//std::cout << "---------------BUF TRAS REASIGNARLO---------------" << std::endl;
-		//for (int i = 0; i < client->request.bufLen; i++)
-			//std::cout << client->request.buf[i];
-		//std::cout << std::endl;
+		else
+		{
+			//RESTO
+			//std::cout << "Bodylen: " << client->request.bufLen << std::endl;
+			std::string	body;
+			body.reserve(client->request.bufLen);
+			//std::cout << "Donde tiene que empezar: " << lim + 4 << std::endl;
+			for (size_t i = 0, j = lim + 4; i < client->request.bufLen; i++, j++)
+			{
+				body[i] = client->request.buf[j];
+				////std::cout << "j: " << j << std::endl;
+				////std::cout << client->request.buf[j];
+			}
+			//std::cout << std::endl;
+			//std::cout << "Guardó bien el resto" << std::endl;
+			//std::cout << "Resto: " << std::endl;
+			//for (int i = 0; i < client->request.bufLen; i++)
+				//std::cout << body[i];
+			//std::cout << std::endl;
+			//client->request.buf.clear();
+			client->request.buf.reserve(client->request.bufLen);
+			for (size_t i = 0; i < client->request.bufLen; i++)
+				client->request.buf[i] = body[i];
+			//std::cout << "---------------BUF TRAS REASIGNARLO---------------" << std::endl;
+			//for (int i = 0; i < client->request.bufLen; i++)
+				//std::cout << client->request.buf[i];
+			//std::cout << std::endl;
+		}
+		
 	}
 	loadRequest(&client->request);
 	client->state = 1;

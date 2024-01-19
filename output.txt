@@ -1,0 +1,736 @@
+Token: events
+Token: {
+Token: prueba
+Token: 2
+Token: ;
+Token: }
+Token: http
+Token: {
+Token: types
+Token: {
+Token: text/html
+Token: html
+Token: htm
+Token: html
+Token: ;
+Token: text/css
+Token: css
+Token: ;
+Token: text/xml
+Token: xml
+Token: ;
+Token: }
+Token: server
+Token: {
+Token: server_name
+Token: pfuentes.42
+Token: ;
+Token: listen
+Token: 127
+Token: ;
+Token: location
+Token: /about.html
+Token: {
+Token: alias
+Token: /documents/tour.html
+Token: ;
+Token: }
+Token: location
+Token: /del_prueba
+Token: {
+Token: root
+Token: hola
+Token: ;
+Token: }
+Token: location
+Token: /
+Token: {
+Token: alias
+Token: /about.html
+Token: ;
+Token: }
+Token: location
+Token: /prueba
+Token: {
+Token: root
+Token: /documents/
+Token: ;
+Token: }
+Token: }
+Token: server
+Token: {
+Token: server_name
+Token: serbre
+Token: ;
+Token: listen
+Token: 8080
+Token: ;
+Token: error_page
+Token: 502
+Token: 503
+Token: 504
+Token: /50x.html
+Token: ;
+Token: error_page
+Token: 500
+Token: /50x.html
+Token: ;
+Token: location
+Token: /manuel
+Token: {
+Token: alias
+Token: /documents/
+Token: ;
+Token: }
+Token: location
+Token: /cgi
+Token: {
+Token: cgi_pass
+Token: /cgi/
+Token: ;
+Token: }
+Token: location
+Token: /
+Token: {
+Token: alias
+Token: /documents/
+Token: ;
+Token: methods
+Token: GET
+Token: POST
+Token: ;
+Token: error_files
+Token: 403
+Token: 404
+Token: /documents/error.html
+Token: ;
+Token: postdir
+Token: /postfiles/
+Token: ;
+Token: try_files
+Token: index.html
+Token: index.htm
+Token: ;
+Token: }
+Token: location
+Token: /manolo
+Token: {
+Token: alias
+Token: /documents/
+Token: ;
+Token: methods
+Token: GET
+Token: POST
+Token: ;
+Token: postdir
+Token: /postfiles/
+Token: ;
+Token: }
+Token: location
+Token: /pepe/juan
+Token: {
+Token: root
+Token: jeje
+Token: ;
+Token: alias
+Token: /documents/
+Token: ;
+Token: }
+Token: location
+Token: /pepe
+Token: {
+Token: root
+Token: jejeje
+Token: ;
+Token: alias
+Token: manolo
+Token: ;
+Token: }
+Token: }
+Token: }
+Entro en binary insert
+Entro en binary insert
+Resultado de binarySearch: 0
+Guardar elemento en pos: 0
+Entro en binary insert
+Resultado de binarySearch: -2
+Lo añade al final o vector está vacío
+Entro en binary insert
+Resultado de binarySearch: 1
+Guardar elemento en pos: 1
+Entro en binary insert
+Entro en binary insert
+Resultado de binarySearch: 0
+Guardar elemento en pos: 0
+Entro en binary insert
+Resultado de binarySearch: -2
+Lo añade al final o vector está vacío
+Entro en binary insert
+Resultado de binarySearch: 1
+Guardar elemento en pos: 1
+Entro en binary insert
+Resultado de binarySearch: -1
+Lo añade al principio
+Entro en binary insert
+Resultado de binarySearch: 2
+Guardar elemento en pos: 2
+---------------Imprimir árbol de fichero de configuración---------------
+Context: main
+Hijo 0 de: main
+Context: events
+Key: prueba: Value: 2
+Hijo 1 de: main
+Context: http
+Hijo 0 de: http
+Context: types
+Key: text/css: Value: css
+Key: text/html: Value: html
+Key: text/html: Value: htm
+Key: text/html: Value: html
+Key: text/xml: Value: xml
+Hijo 1 de: http
+Context: server
+Key: listen: Value: 127
+Key: server_name: Value: pfuentes.42
+Hijo 0 de: server
+Context: location
+Argumentos del contexto: {/del_prueba}
+Key: root: Value: hola
+Hijo 1 de: server
+Context: location
+Argumentos del contexto: {/prueba}
+Key: root: Value: /documents/
+Hijo 2 de: server
+Context: location
+Argumentos del contexto: {/about.html}
+Key: alias: Value: /documents/tour.html
+Hijo 3 de: server
+Context: location
+Argumentos del contexto: {/}
+Key: alias: Value: /about.html
+Hijo 2 de: http
+Context: server
+Key: error_page: Value: 502
+Key: error_page: Value: 503
+Key: error_page: Value: 504
+Key: error_page: Value: /50x.html
+Key: error_page: Value: 500
+Key: error_page: Value: /50x.html
+Key: listen: Value: 8080
+Key: server_name: Value: serbre
+Hijo 0 de: server
+Context: location
+Argumentos del contexto: {/pepe/juan}
+Key: alias: Value: /documents/
+Key: root: Value: jeje
+Hijo 1 de: server
+Context: location
+Argumentos del contexto: {/cgi}
+Key: cgi_pass: Value: /cgi/
+Hijo 2 de: server
+Context: location
+Argumentos del contexto: {/pepe}
+Key: alias: Value: manolo
+Key: root: Value: jejeje
+Hijo 3 de: server
+Context: location
+Argumentos del contexto: {/manolo}
+Key: alias: Value: /documents/
+Key: methods: Value: GET
+Key: methods: Value: POST
+Key: postdir: Value: /postfiles/
+Hijo 4 de: server
+Context: location
+Argumentos del contexto: {/manuel}
+Key: alias: Value: /documents/
+Hijo 5 de: server
+Context: location
+Argumentos del contexto: {/}
+Key: alias: Value: /documents/
+Key: error_files: Value: 403
+Key: error_files: Value: 404
+Key: error_files: Value: /documents/error.html
+Key: methods: Value: GET
+Key: methods: Value: POST
+Key: postdir: Value: /postfiles/
+Key: try_files: Value: index.html
+Key: try_files: Value: index.htm
+Estoy en contexto: main
+Estoy en contexto: events
+Estoy en contexto: http
+Port de server 0 es: 127
+Socket de servidor 0 es: 3
+Port de server 1 es: 8080
+Socket de servidor 1 es: 4
+SOCKET DE ESCUCHA: 4
+Socket de cliente aceptado: 5
+Añadir cliente al vector
+Añadió bien el cliente al vector
+No hay evento a -1 para sobreescribir, escribo en el máximo actual
+NEW EVENT | FD: 5 | EVENTS: 1
+No hay evento a -1 para sobreescribir, escribo en el máximo actual
+NEW EVENT | FD: 5 | EVENTS: 4
+EVENTO DE LECTURA
+~~~~LOAD REQUEST STAGE~~~~
+Creó el istringstream
+Method a evaluar: GET
+Id de method: 0
+
+METHOD: 
+
+URL: /post
+-------------------IMPRIMO MAPA-------------------
+
+
+Key: Accept | Value: text/html,application/xhtml+xml,application/xml
+Key: Accept | Value: q=0.9,image/avif,image/webp,*/*
+Key: Accept | Value: q=0.8
+Key: Accept-Encoding | Value: gzip, deflate, br
+Key: Accept-Language | Value: en-US,en
+Key: Accept-Language | Value: q=0.5
+Key: Connection | Value: keep-alive
+Key: Host | Value: localhost:8080
+Key: Sec-Fetch-Dest | Value: document
+Key: Sec-Fetch-Mode | Value: navigate
+Key: Sec-Fetch-Site | Value: none
+Key: Sec-Fetch-User | Value: ?1
+Key: Upgrade-Insecure-Requests | Value: 1
+Key: User-Agent | Value: Mozilla/5.0 (Macintosh
+Key: User-Agent | Value: Intel Mac OS X 10.15
+Key: User-Agent | Value: rv:108.0) Gecko/20100101 Firefox/108.0
+leaks Report Version: 4.0
+Process 17079: 298 nodes malloced for 24 KB
+Process 17079: 0 leaks for 0 total leaked bytes.
+
+
+
+-------------------TERMINA DE IMPRIMIR MAPA-------------------
+
+
+Estado de cliente tras leer: 2
+EVENTO DE ESCRITURA
+---WRITE EVENT---
+EN RESPONSE TO METHOD
+MÉTODO A EVALUAR: 0
+GET METHOD
+URL: /post
+URL a comparar: /post
+Estoy en contexto location: /pepe/juan
+Len de location: 10
+SUBDIRS1
+
+pepe
+juan
+SUBDIRS2
+
+post
+Estoy en contexto location: /cgi
+Len de location: 4
+SUBDIRS1
+
+cgi
+SUBDIRS2
+
+post
+Estoy en contexto location: /pepe
+Len de location: 5
+SUBDIRS1
+
+pepe
+SUBDIRS2
+
+post
+Estoy en contexto location: /manolo
+Len de location: 7
+SUBDIRS1
+
+manolo
+SUBDIRS2
+
+post
+Estoy en contexto location: /manuel
+Len de location: 7
+SUBDIRS1
+
+manuel
+SUBDIRS2
+
+post
+Estoy en contexto location: /
+Len de location: 1
+SUBDIRS1
+
+SUBDIRS2
+
+post
+Hace match de la URL: / y /post
+Location es: /
+URL es: /post
+Key tipo: alias
+Encontró la key
+Key tipo encontrada: alias
+fileDir: post
+Alias: 
+filePath: /Users/marias-e/Desktop/webserv/documents/post
+
+FILEPATH IS:/Users/marias-e/Desktop/webserv/documents/post
+filePath: /Users/marias-e/Desktop/webserv/documents/post
+---------Hubo error: 404 , mandar error path--------
+URL a comparar: /post
+Estoy en contexto location: /pepe/juan
+Len de location: 10
+SUBDIRS1
+
+pepe
+juan
+SUBDIRS2
+
+post
+Estoy en contexto location: /cgi
+Len de location: 4
+SUBDIRS1
+
+cgi
+SUBDIRS2
+
+post
+Estoy en contexto location: /pepe
+Len de location: 5
+SUBDIRS1
+
+pepe
+SUBDIRS2
+
+post
+Estoy en contexto location: /manolo
+Len de location: 7
+SUBDIRS1
+
+manolo
+SUBDIRS2
+
+post
+Estoy en contexto location: /manuel
+Len de location: 7
+SUBDIRS1
+
+manuel
+SUBDIRS2
+
+post
+Estoy en contexto location: /
+Len de location: 1
+SUBDIRS1
+
+SUBDIRS2
+
+post
+Hace match de la URL: / y /post
+Encuentra error_files en location
+Key: error_files | Value: 403
+error de error_files: 403
+Key: error_files | Value: 404
+error de error_files: 404
+Fichero a redirigir: Key: error_files | Value: /documents/error.html
+File a responder: /Users/marias-e/Desktop/webserv/documents/error.html
+Lee bien el fichero para enviar la respuesta
+
+RESPONSE HEADER IS: HTTP/1.1 404 Not Found
+Content-Length: 62
+Connection: close
+
+
+SOCKET DE ESCUCHA: 4
+Socket de cliente aceptado: 5
+Añadir cliente al vector
+Añadió bien el cliente al vector
+Hay evento a -1 para sobreescribirNEW EVENT | FD: 5 | EVENTS: 1
+No hay evento a -1 para sobreescribir, escribo en el máximo actual
+NEW EVENT | FD: 5 | EVENTS: 4
+EVENTO DE LECTURA
+~~~~LOAD REQUEST STAGE~~~~
+Creó el istringstream
+Method a evaluar: GET
+Id de method: 0
+
+METHOD: 
+
+URL: /favicon.ico
+-------------------IMPRIMO MAPA-------------------
+
+
+Key: Accept | Value: image/avif,image/webp,*/*
+Key: Accept-Encoding | Value: gzip, deflate, br
+Key: Accept-Language | Value: en-US,en
+Key: Accept-Language | Value: q=0.5
+Key: Connection | Value: keep-alive
+Key: Host | Value: localhost:8080
+Key: Referer | Value: http://localhost:8080/post
+Key: Sec-Fetch-Dest | Value: image
+Key: Sec-Fetch-Mode | Value: no-cors
+Key: Sec-Fetch-Site | Value: same-origin
+Key: User-Agent | Value: Mozilla/5.0 (Macintosh
+Key: User-Agent | Value: Intel Mac OS X 10.15
+Key: User-Agent | Value: rv:108.0) Gecko/20100101 Firefox/108.0
+leaks Report Version: 4.0
+Process 17079: 295 nodes malloced for 23 KB
+Process 17079: 0 leaks for 0 total leaked bytes.
+
+
+
+-------------------TERMINA DE IMPRIMIR MAPA-------------------
+
+
+Estado de cliente tras leer: 2
+EVENTO DE ESCRITURA
+---WRITE EVENT---
+EN RESPONSE TO METHOD
+MÉTODO A EVALUAR: 0
+GET METHOD
+URL: /favicon.ico
+URL a comparar: /favicon.ico
+Estoy en contexto location: /pepe/juan
+Len de location: 10
+SUBDIRS1
+
+pepe
+juan
+SUBDIRS2
+
+favicon.ico
+Estoy en contexto location: /cgi
+Len de location: 4
+SUBDIRS1
+
+cgi
+SUBDIRS2
+
+favicon.ico
+Estoy en contexto location: /pepe
+Len de location: 5
+SUBDIRS1
+
+pepe
+SUBDIRS2
+
+favicon.ico
+Estoy en contexto location: /manolo
+Len de location: 7
+SUBDIRS1
+
+manolo
+SUBDIRS2
+
+favicon.ico
+Estoy en contexto location: /manuel
+Len de location: 7
+SUBDIRS1
+
+manuel
+SUBDIRS2
+
+favicon.ico
+Estoy en contexto location: /
+Len de location: 1
+SUBDIRS1
+
+SUBDIRS2
+
+favicon.ico
+Hace match de la URL: / y /favicon.ico
+Location es: /
+URL es: /favicon.ico
+Key tipo: alias
+Encontró la key
+Key tipo encontrada: alias
+fileDir: favicon.ico
+Alias: 
+filePath: /Users/marias-e/Desktop/webserv/documents/favicon.ico
+
+FILEPATH IS:/Users/marias-e/Desktop/webserv/documents/favicon.ico
+filePath: /Users/marias-e/Desktop/webserv/documents/favicon.ico
+
+RESPONSE HEADER IS: HTTP/1.1 200 OK
+Connection: close
+
+
+File a responder: /Users/marias-e/Desktop/webserv/documents/favicon.ico
+Lee bien el fichero para enviar la respuesta
+SOCKET DE ESCUCHA: 4
+Socket de cliente aceptado: 5
+Añadir cliente al vector
+Añadió bien el cliente al vector
+Hay evento a -1 para sobreescribirNEW EVENT | FD: 5 | EVENTS: 1
+No hay evento a -1 para sobreescribir, escribo en el máximo actual
+NEW EVENT | FD: 5 | EVENTS: 4
+EVENTO DE LECTURA
+~~~~LOAD REQUEST STAGE~~~~
+Creó el istringstream
+Method a evaluar: POST
+Id de method: 1
+
+METHOD: 
+
+URL: /post-multi.hpp
+-------------------IMPRIMO MAPA-------------------
+
+
+Key: Accept | Value: */*
+Key: Content-Type | Value: application/x-www-form-urlencoded
+Key: Host | Value: localhost:8080
+Key: Transfer-Encoding | Value: chunked
+Key: User-Agent | Value: curl/7.64.1
+leaks Report Version: 4.0
+Process 17079: 285 nodes malloced for 22 KB
+Process 17079: 0 leaks for 0 total leaked bytes.
+
+
+
+-------------------TERMINA DE IMPRIMIR MAPA-------------------
+
+
+Estado de cliente tras leer: 2
+EVENTO DE ESCRITURA
+---WRITE EVENT---
+EN RESPONSE TO METHOD
+MÉTODO A EVALUAR: 1
+ESTOY EN POST
+BODY REQUEST: 2a
+/Users/marias-e/Desktop/webserv/momaso.png
+0
+
+User-Agent: curl/7.64.1
+Accept: */*
+Transfer-Encoding: chunked
+Content-Type: application/x-www-form-urlencoded
+
+2a
+/Users/marias-e/Desktop/webserv/momaso.png
+0
+
+
+URL: /post-multi.hpp
+URL a comparar: /post-multi.hpp
+Estoy en contexto location: /pepe/juan
+Len de location: 10
+SUBDIRS1
+
+pepe
+juan
+SUBDIRS2
+
+post-multi.hpp
+Estoy en contexto location: /cgi
+Len de location: 4
+SUBDIRS1
+
+cgi
+SUBDIRS2
+
+post-multi.hpp
+Estoy en contexto location: /pepe
+Len de location: 5
+SUBDIRS1
+
+pepe
+SUBDIRS2
+
+post-multi.hpp
+Estoy en contexto location: /manolo
+Len de location: 7
+SUBDIRS1
+
+manolo
+SUBDIRS2
+
+post-multi.hpp
+Estoy en contexto location: /manuel
+Len de location: 7
+SUBDIRS1
+
+manuel
+SUBDIRS2
+
+post-multi.hpp
+Estoy en contexto location: /
+Len de location: 1
+SUBDIRS1
+
+SUBDIRS2
+
+post-multi.hpp
+Hace match de la URL: / y /post-multi.hpp
+Location es: /
+URL es: /post-multi.hpp
+filePath: /Users/marias-e/Desktop/webserv/postfiles/
+
+FILEPATH IS:/Users/marias-e/Desktop/webserv/postfiles/
+Encontró la key: Content-Type , Value: application/x-www-form-urlencoded
+TIPO DE POST: application/x-www-form-urlencoded
+---------Hubo error: 400 , mandar error path--------
+URL a comparar: /post-multi.hpp
+Estoy en contexto location: /pepe/juan
+Len de location: 10
+SUBDIRS1
+
+pepe
+juan
+SUBDIRS2
+
+post-multi.hpp
+Estoy en contexto location: /cgi
+Len de location: 4
+SUBDIRS1
+
+cgi
+SUBDIRS2
+
+post-multi.hpp
+Estoy en contexto location: /pepe
+Len de location: 5
+SUBDIRS1
+
+pepe
+SUBDIRS2
+
+post-multi.hpp
+Estoy en contexto location: /manolo
+Len de location: 7
+SUBDIRS1
+
+manolo
+SUBDIRS2
+
+post-multi.hpp
+Estoy en contexto location: /manuel
+Len de location: 7
+SUBDIRS1
+
+manuel
+SUBDIRS2
+
+post-multi.hpp
+Estoy en contexto location: /
+Len de location: 1
+SUBDIRS1
+
+SUBDIRS2
+
+post-multi.hpp
+Hace match de la URL: / y /post-multi.hpp
+Encuentra error_files en location
+Key: error_files | Value: 403
+error de error_files: 403
+Key: error_files | Value: 404
+error de error_files: 404
+Key: error_files | Value: /documents/error.html
+error de error_files: 0
+DEFAULT ERROR PATH
+File a responder: /Users/marias-e/Desktop/webserv/errors/error400.html
+Lee bien el fichero para enviar la respuesta
+
+RESPONSE HEADER IS: HTTP/1.1 400 Bad Request
+Content-Length: 59
+Connection: close
+
+
