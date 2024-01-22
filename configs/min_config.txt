@@ -1,0 +1,71 @@
+
+events
+{
+    prueba 2;}
+
+http{
+    types {
+        text/html                                        html htm html;
+        text/css                                         css;
+        text/xml                                         xml;
+    }
+server{
+    server_name pfuentes.42;
+    listen 127;
+    location    /about.html{
+        alias   /documents/tour.html;
+    }
+
+    location    /del_prueba{
+        root    hola;
+    }
+    location    /{
+        alias    /about.html;
+    }
+    location    /prueba
+    {
+        root    /documents/;
+    }
+}
+    server{
+        server_name   serbre;
+        listen        8080;
+
+        error_page    502 503 504  /50x.html;
+
+        error_page    500  /50x.html;
+
+        location        /documents/
+        {
+            autoindex on;
+            alias /documents/;
+        }
+        location    /cgi
+        {
+            cgi_pass    /cgi/;
+        }
+        location      /{
+            alias      /documents/;
+            methods   GET POST;
+            error_files 403 404 /documents/error.html;
+            postdir   /postfiles/;
+            index   /documents/index.html /documents/index.htm;
+        }
+        location    /manolo
+        {
+            alias     /documents/;
+            methods   GET POST;
+            postdir   /postfiles/;
+            try_files index.html index.htm;
+        }
+        location      /pepe/juan{
+            root      jeje;
+            alias     /documents/;
+        }
+        location      /pepe{
+            root      jejeje;
+            alias     manolo;
+        }
+    }
+}
+
