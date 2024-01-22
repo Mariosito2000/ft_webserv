@@ -1,2 +1,0 @@
-feet=HOLA
-name=PACO
