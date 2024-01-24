@@ -1,0 +1,35 @@
+
+workers 1;
+events{
+
+	hola 2;}
+
+
+http{
+		server{
+		listen 443 ssl;
+		server_name pfuentes.42.fr;
+		root /var/www/html;
+		index index.php index.html index.htm;
+		access_log /var/log/nginx/access.log;
+		error_log /var/log/nginx/error.log;
+		location /kapoeut {
+			alias tmp/gege;
+			include /etc/nginx/fastcgi_params;
+			try_files $uri $uri/ /index.php?$args = 404;
+			#fastcgi_pass unix:/var/run/fcgiwrap.socket;
+			fastcgi_pass  localhost:9000;
+			fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+			fastcgi_param QUERY_STRING    $query_string;
+		}
+		location ~ \.(gif|jpg|png)$ {
+			root /data/images;
+		}
+		servdidor holas;
+		location ~ \.php$ {
+				include snippets/fastcgi-php.conf;
+				#fastcgi_pass unix:/var/run/php/php7.4-fmp.sock;
+				fastcgi_pass      127.0.0.1:9000;
+				fastcgi_index     index.php;
+				include           fastcgi.conf;
+		}}}
