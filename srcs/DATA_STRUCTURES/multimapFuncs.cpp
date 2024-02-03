@@ -65,3 +65,18 @@ std::string	getMultiMapValueKeys(std::multimap<std::string, std::string> &map, s
 	throw (1);
 }
 
+bool	multiMapCheckValidValue(std::multimap<std::string, std::string>	&map, std::string key, bool (*f)(std::string &value))
+{
+	itmap	itm = map.find(key);
+	if (itm != map.end())
+	{
+		itr	it = map.equal_range(key);
+		for (itmap itb = it.first, ite = it.second; itb != ite; itb++)
+		{
+			if (!f(itb->second))
+				return (false);
+		}
+	}
+	return (true);
+}
+

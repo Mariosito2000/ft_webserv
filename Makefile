@@ -1,16 +1,11 @@
 # Colors:
 NC      =   \033[0m
 LRED    =   \033[0;31m
-LREDB   =   \033[1;31m
-GREEN   =   \033[1;32m
 LGREEN  =   \033[1;92m
-PINK    =   \033[1;95m
-YELLOW  =   \033[1;35m
-LBLUE   =   \033[1;34m
 TITLE   =   \033[1;36m
 # Compile variables
 CC              =   c++
-FLAGS           =   -Wall -Wextra -Werror -std=c++98 #-fsanitize=address
+FLAGS           =   -Wall -Wextra -Werror -std=c++98 #-g3 -fsanitize=address
 COMPILE         =   $(CC) $(FLAGS)
 # ************ CODE ************
 NAME            =   webserv
@@ -19,11 +14,13 @@ DATA_STRUCTURES = 	seLst.cpp \
 					multimapFuncs.cpp
 PARSER   		=   parse.cpp \
 					binaryInsert.cpp \
-					directories.cpp
+					cmpLocations.cpp
 SOCKETS   		=   socketConnection.cpp \
 					eventLoop.cpp
-REQUEST    		=  	httpRequest.cpp
+REQUEST    		=  	httpRequest.cpp \
+					readChunkedRequest.cpp
 RESPONSE    	=   httpMethods.cpp \
+					getMethod.cpp \
 					cgi.cpp \
 					postMultiPartForm.cpp \
 					postText.cpp \

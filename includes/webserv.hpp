@@ -21,11 +21,29 @@
 #include <vector>
 #include <list>
 #include <algorithm>
+#include <libc.h>
 
-#define MAX_SE_ELEM 64
-#define MAX_READ 17
+#define MAX_SE_ELEM 500000
+#define MAX_READ 200000
 #define BUF_SIZE 200000
 #define PORT 8080
+#define CGITIMEOUT 3
+
+enum statusCodes {CREATED = 201,
+				MOVED_PERMANENTLY = 301,
+				BAD_REQUEST = 400,
+				FORBIDDEN = 403,
+				NOT_FOUND = 404,
+				METHOD_NOT_ALLOWED = 405,
+				REQUEST_TIMEOUT = 408,
+				CONFLICT = 409,
+				LENGTH_REQUIRED = 411,
+				PAYLOAD_TOO_LARGE = 413,
+				INTERNAL_SERVER_ERROR = 500,
+				NOT_IMPLEMENTED = 501,
+				BAD_GATEWAY = 502,
+				GATEWAY_TIMEOUT = 504
+};
 
 typedef struct seNode{
 	size_t			elem_n;
@@ -41,47 +59,41 @@ typedef struct	seLst{
 	size_t	bytes;
 } seLst;
 
-typedef struct	context{
+typedef struct	int_tuple{
+	int	i;
+	int	e;
+} int_tuple;
+
+typedef struct	s_context{
 	std::string							_name;
 	typedef enum types{MAIN, MIME_TYPES, HTTP, SERVER, LOCATION} types;
 	short								_type;
 	short								_op;
 	std::vector<std::string>			_args;
-	std::map<std::string, std::string>	_dirs;
-} context;
+	std::multimap<std::string, std::string>	_dirs;
+} t_context;
 
-
-typedef struct bTreeNode 
-//llamarlo n-tree o m-tree no es un b-tree realmente
+typedef struct parseTree 
 {
-	std::string					contextName;
-	size_t						contextType;
-	std::vector<std::string>	contextArgs;
-	//cambiar contenido a <pair>: key-value, pero valores puede ser una lista, múltiples valores
-	std::multimap<std::string, std::string>	directivesMap;
-	std::vector<std::pair<std::string, std::vector<std::string> > >	directives;
-	std::vector<std::string>	childsNames; //nombre del tipo de cada hijo añadido
-	//int							*childsTypes; //tipos de cada hijo, id para saber donde moverse
-	void						*_content;
-	std::vector<bTreeNode*>		childs; //punteros a los hijos
-} bTreeNode;
+	t_context					context;
+	std::vector<parseTree *>	childs;
+}	parseTree ;
 
 struct HttpResponse {
-	std::string firstLine; //method, version
-    std::string body; //if empty, content-length
+	std::string firstLine;
+    std::string body;
 	std::string	response;
-    //std::map<std::string, std::string> headers;
 	size_t	bytesSent;
-
-	//constructor y métodos
 };
 
 typedef struct	chunk{
-	bool		isChunked; // If true the request body is chunk encoded;
+	bool		isChunked; // If true the request body is chunk encoded
+	bool		complete; // If true DeChunking complete
 	bool		readingSize; // If true we are currently reading the HEX value of the chunk size
-	std::string	stringHex; // String of the HEX value of the chunk size
 	size_t		size; // Size of the current chunk
-	size_t		read; // Bytes read at the current chunk
+	size_t		index; // Extra bytes from the body that are not content (necesarios para mirar max body length)
+	std::string	stringHex; // String of the HEX value of the chunk size
+	std::string	buf; // Content
 }	chunk;
 
 typedef struct HttpRequest {
@@ -95,60 +107,62 @@ typedef struct HttpRequest {
 	typedef enum methods{GET, POST, PUT, DELETE} methods;
     std::string url; //version
 	std::string query;
+	std::string pathInfo;
     std::multimap<std::string, std::string> headers;
-	//std::multimap<std::string, std::string>	bodyData;
 	bool	cgi;
 	std::map<std::string, std::string>	cookies;
 	int status;
-} HttpRequest;
+	size_t	contentLen;
+} 	HttpRequest;
 
 typedef struct s_ports{
-	std::vector<int>	id; // id del puerto
-	std::vector<int>	fd; //fd del socket asociado a ese puerto
+	std::vector<int>	id;
+	std::vector<int>	fd;
 	size_t				n;
 } t_ports ;
 
 typedef struct client {
-    int fd;
-	int	portID; //port id
-	int	state; // 0 - tiene que leer header, 1 - tiene que leer body, 2 - tiene que escribir
-	bTreeNode 	*server; //que cada cliente tenga un puntero a su servidor, para no tener que pasarlo como parametro por funciones
+    int 			fd;
+	int				portID;
+	int				state; // 0 -> READ HEADER, 1 -> READ BODY, 2 -> GENERATE RESPONSE, 3 -> WRITE RESPONSE
+	parseTree 		*server;
 	HttpRequest 	request;
 	HttpResponse	response;
-	bTreeNode	*loc;
-	bool operator==(struct client const &cmp) const
+	parseTree		*loc;
+	pollfd 			event;
+	size_t			timer;
+	bool 			operator==(struct client const &cmp) const
 	{
 		if (this->fd == cmp.fd)
 			return (1);
 		return (0);
 	}
-	//server *SocketServer;
 } client;
 
+typedef struct events
+{
+	pollfd *events;
+	std::list<pollfd>	addEvents;
+	std::list<pollfd>	delEvents;
+	size_t				n;
+}	events;
 
+typedef struct clients
+{
+	std::vector<client>	clients;
+	std::list<client>	addClients;
+	std::list<client>	delClients;
+}	clients;
 
-class	clientQueue {
-
-	public:
-		void clearRequest(int);
-		void addClient(int, int);
-		clientQueue();
-		~clientQueue();
-		std::vector<client> clientArray;
-		int getPos(int);
-		int getServerId(int);
-};
 typedef struct	servers{
 	
 	int			*serversFd;
 	int			servers_n;
-	clientQueue	clients;
-	std::vector<bTreeNode*>	serversPtr;
+	std::vector<parseTree*>	serversPtr;
 }	servers ;
 
-enum	token_type{word, openBracket, closeBracket, endDeclare}; //enums para tipos de token
+enum	token_type{word, openBracket, closeBracket, endDeclare};
 
-//más "orientado a objetos" cada token un objeto con sus atributos "individuales"
 typedef struct	s_token
 {
 	size_t		line;
@@ -156,19 +170,20 @@ typedef struct	s_token
 	std::string	value;
 }	t_token;
 
-//más "orientado a datos" una estructura que guarda en arrays las propiedades de todos los tokens, se "mapea" de manera lineal, unívoca
-typedef struct s_tokens
-{
-	int		n;
-	size_t	*line;
-	size_t	*type;
-	std::vector<std::string>	values;
-}	t_tokens;
-
 //seLst functions
 seNode	*newseNode();
 void	seLstPushBack(seLst &lst, seNode *newNode);
 void	seLstFree(seLst &lst);
+
+//MULTIMAP
+typedef std::multimap<std::string, std::string>::iterator itmap;
+typedef std::pair<itmap, itmap> itr;
+std::string *getMultiMapValue(std::multimap<std::string, std::string> &map, std::string key);
+bool		isInMultiMapKey(std::multimap<std::string, std::string> &map, std::string key);
+bool		isInMultiMapValue(std::multimap<std::string, std::string> &map, std::string key, std::string value);
+bool 		isInMultiMapValues(std::multimap<std::string, std::string> &map, std::string key, std::string values[], size_t len);
+std::string	getMultiMapValueKeys(std::multimap<std::string, std::string> &map, std::string keys[], size_t len);
+bool		multiMapCheckValidValue(std::multimap<std::string, std::string>	&map, std::string key, bool (*f)(std::string &value));
 
 //data structures transforms
 char	*seLstToStr(seLst &lst);
@@ -179,47 +194,43 @@ size_t	countCharinStr(const char *str, char c);
 //parse files
 bool		tokenizeFile(const char *file, std::vector<t_token> &tokens, std::string &del);
 char		*readFileSeLst(int fd);
-bTreeNode	*parseFile(char	*file);
+parseTree	*parseFile(char	*file);
 
-//tree funcs - find, search
+//tree funcs
 
-void		findNode(bTreeNode *root, bTreeNode **find_node, std::string find);
-bTreeNode	*findLocation(struct client *client);
+void		findNode(parseTree *root, parseTree **find_node, std::string find);
 bool		findFile(std::string &dirFind, std::string &file);
-std::string *getMultiMapValue(std::multimap<std::string, std::string> &map, std::string key);
-bool		isInMultiMapKey(std::multimap<std::string, std::string> &map, std::string key);
-bool		isInMultiMapValue(std::multimap<std::string, std::string> &map, std::string key, std::string value);
-
-//socket funcs
 
 //sort-insert funcs
-int		binarySearch(std::vector<bTreeNode*> &vec, bTreeNode *insert);
-void	binaryInsert(std::vector<bTreeNode *> &vec, bTreeNode *insert);
+void	linearInsertLoc(std::vector<parseTree *> locs, parseTree *add);
 
 //directories-locations
-int	cmpDirectories(std::string &s1, std::string &s2);
-int	cmpLocations(bTreeNode *loc, bTreeNode *cmp);
+int	cmpLocations(parseTree *loc, parseTree *cmp);
 int	cmpDirectives(void *loc, void *cmp);
 
 //--HTTP REQUEST---
-int		readEvent(struct client *client);
-//int		readEvent(clientQueue &Queue, struct kevent *client, struct kevent *client_event, int kq);
-int		writeEvent(struct client *client);
-//void	writeEvent(bTreeNode *server, clientQueue &Queue, int ident, struct kevent *client_event, int kq);
-//HttpRequest loadRequest(char *buffer);
+int			readEvent(struct client *client);
+int			writeEvent(struct client *client);
 void		loadRequest(HttpRequest *request);
-std::string	getRequestedFile(bTreeNode	*server, client *client);
+std::string	getPathFileRequest(client *client, std::vector<std::string>	&redirs);
 std::string getResponseBody(std::string fileToReturn);
 std::string	getStatus(int status);
 std::string getResponseHeader(HttpRequest &currentRequest, std::string &body);
-std::string GetResponse(bTreeNode	*server, std::string &url);
-std::string ResponseToMethod(client *client);
+std::string GetResponse(parseTree	*server, std::string &url);
+void 		ResponseToMethod(client *client);
+
+//CHUNKED REQUEST
+void 	postHeaderChunk(struct client *client, size_t lim);
+void	readBodyChunked(struct client *client);
 
 //HTTP METHODS
-int		callMultiPart(struct client *client, std::string &path);
-void	postMultiPartForm(std::string &route, const char *body, std::string &boundary, size_t size);
-void	postText(std::string &route, const char *body, size_t size);
-void	postUrlEncoded(std::string &route, const char *body, size_t size);
+parseTree	*matchLocation(struct client *client);
+void		getMethod(client *client);
+void		callMultiPart(struct client *client, std::string &path);
+void		postMultiPartForm(std::string &route, const char *body, std::string &boundary, size_t size);
+void		postText(std::string &route, const char *body, size_t size);
+void		postUrlEncoded(std::string &route, const char *body, size_t size);
+
 //LOCATE
 size_t locate(const char *haystack, const char *needle, size_t i, size_t size, size_t nsize);
 
@@ -227,22 +238,13 @@ size_t locate(const char *haystack, const char *needle, size_t i, size_t size, s
 void 	setNonBlocking(int fd);
 int		getServerSocket(sockaddr_in *addr, int port);
 void	bindAndListen(int sock, sockaddr_in *addr);
-int		pollEvents(std::vector<bTreeNode *> &servers, t_ports *ports);
+int		pollEvents(std::vector<parseTree *> &servers, t_ports *ports);
 
 //---CGI---
 std::string getCgi(std::string script);
-std::string CGIForward(std::string &path, client *client);
+void		CGIForward(client *client);
 
 //ERRORS
 std::string	getStatus(int status);
 std::string	getErrorPath(struct client *client, int error);
-std::string	getErrorResponse(struct client *client, int error);
-
-//MULTIMAP
-typedef std::multimap<std::string, std::string>::iterator itmap;
-typedef std::pair<itmap, itmap> itr;
-std::string *getMultiMapValue(std::multimap<std::string, std::string> &map, std::string key);
-bool		isInMultiMapKey(std::multimap<std::string, std::string> &map, std::string key);
-bool		isInMultiMapValue(std::multimap<std::string, std::string> &map, std::string key, std::string value);
-bool 		isInMultiMapValues(std::multimap<std::string, std::string> &map, std::string key, std::string values[], size_t len);
-std::string	getMultiMapValueKeys(std::multimap<std::string, std::string> &map, std::string keys[], size_t len);
+void		getErrorResponse(struct client *client, int error);

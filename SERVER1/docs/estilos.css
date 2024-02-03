@@ -1,0 +1,72 @@
+body{
+	padding:20px;
+	margin:20px 60px;
+	font-family:Arial;
+	font-size: 18px;
+	background-color:white;
+}
+
+.principal{
+	width: 95%;
+	height: 900px;
+	background-color: white;
+	margin: 20px 20px 20px 20px ;
+	border:4px inset white;
+}
+
+.encabezado1{
+	width: 96%;
+	height: 100px;
+	background-color: rgb(126, 255, 70);
+	margin: 20px 20px 20px 20px ;
+	border:4px inset white;
+}
+
+.encabezado2{
+	width: 70%;
+	height: 100px;
+	float: right;
+	background-color: rgb(126, 255, 70);
+	margin: 20px 20px 20px 20px ;
+	border:4px inset white;
+}
+
+.contenido{
+	width: 96%;
+	height: 600px;
+	background-color: rgb(126, 255, 70);
+	margin: 20px 20px 20px 20px ;
+	border:4px inset white;
+}
+
+.menu{
+	width: 20%;
+	height: 550px;
+	background-color: rgb(126, 255, 70);
+	margin: 20px 20px 20px 20px ;
+	float: left;
+	border:4px inset white;
+	text-align:left;
+}
+
+.pagina{
+	width: 70%;
+	height: 400px;
+	background-color: rgb(126, 255, 70);
+	margin: 20px 20px 20px 20px ;
+	float: right;
+	border:4px inset white;
+	text-align:center;
+}
+
+.piepagina{
+	width: 96%;
+	height: 100px;
+	background-color: rgb(126, 255, 70);
+	margin: 20px 20px 20px 20px ;
+	border-color: black;
+	border:2px;
+	border:4px inset rgb(255, 255, 255);
+	font-family:Arial;
+	font-size: 10px;
+}

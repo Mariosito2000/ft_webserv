@@ -1,0 +1,18 @@
+<!-- upload_form.html -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create File Form</title>
+</head>
+<body>
+    <form action="/cgi/upload.py" method="post">
+        <label for="file-content">File Content:</label>
+        <textarea id="file-content" name="content" rows="4" cols="50" required></textarea>
+        <br>
+        <input type="submit" value="Create File">
+    </form>
+</body>
+</html>

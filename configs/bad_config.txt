@@ -1,0 +1,122 @@
+http{
+    server
+	{
+        server_name   server1;
+        listen        8080;
+        timeout 10;
+        error_page    400 404  /40x.html;
+
+        location	/images
+		{
+			alias	SERVER1/docs/images/;
+			methods GET DELETE;
+		}
+		location        /docs
+        {
+            autoindex	on;
+            methods 	GET;
+            alias		SERVER1/docs/;
+        }
+		location	/post
+		{
+			methods		GET POST;
+			alias		SERVER1/docs/post/;
+			postdir		SERVER1/uploads/;
+		}
+		location	/downloads
+		{
+			methods GET DELETE;
+			alias	SERVER1/uploads/;
+            autoindex on;
+		}
+        location    /cgi
+        {
+            cgi_pass    SERVER1/cgi/;
+        }
+        location    /redirect
+        {
+            redirect SERVER1/docs/;
+        }
+        location      /{
+            alias      SERVER1/docs/;
+            methods   GET;
+            index   index.html index.htm;
+        }
+    }
+
+	server
+	{
+        server_name   server2;
+        listen        8080;
+        timeout 10;
+        location        /docs
+        {
+            autoindex	on;
+            methods 	GET;
+            alias		SERVER2/docs/;
+        }
+		location	/post
+		{
+			methods		POST;
+			alias		SERVER2/docs;
+			postdir		SERVER2/uploads/;
+		}
+		location	/downloads
+		{
+			methods GET DELETE;
+			alias	SERVER2/uploads/;
+		}
+        location    /cgi
+        {
+            cgi_pass    SERVER2/cgi/;
+        }
+        location    /redirect
+        {
+            redirect SERVER2/docs/;
+        }
+        location      /{
+            alias      SERVER2/docs/;
+            methods   GET;
+            index   index.html index.htm;
+        }
+    }
+
+	server
+	{
+        server_name   server3;
+        listen        3000;
+        timeout 10;
+        error_page    400 404  /40x.html;
+        location        /images
+        {
+            autoindex	off;
+            methods 	GET;
+            alias		SERVER3/docs/images/;
+        }
+		location	/post
+		{
+			methods		GET POST;
+			alias		SERVER3/docs;
+			postdir		SERVER3/postfiles/;
+		}
+		location	/downloads
+		{
+			methods GET DELETE;
+			alias	SERVER3/uploads/;
+		}
+        location    /cgi
+        {
+            cgi_pass    SERVER3/cgi/;
+        }
+        location    /redirect
+        {
+            redirect SERVER3/docs/;
+        }
+        location      /{
+            alias      SERVER3/docs/;
+            methods   GET;
+            index   index.html index.htm;
+        }
+    }
+}
+
