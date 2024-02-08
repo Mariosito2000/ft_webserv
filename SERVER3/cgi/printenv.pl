@@ -7,4 +7,5 @@ foreach (sort keys %ENV) {
    print "<b>$_</b>: $ENV{$_}<br>\n";
 }
 
+1;
 print"</body></html>";

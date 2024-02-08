@@ -23,19 +23,13 @@ http{
 			autoindex   on;
             methods		GET POST;
 			alias		SERVER1/post/;
-			postdir		SERVER1/post_upload/;
+			postdir		SERVER1/upload/;
 		}
-		location	/uploads
+		location	/downloads
 		{
 			methods GET DELETE;
             autoindex on;
-			alias	SERVER1/post_upload/;
-		}
-		location	/cgi_uploads
-		{
-			methods GET DELETE;
-            autoindex on;
-			alias	SERVER1/cgi_upload/;
+			alias	SERVER1/upload/;
 		}
         location    /cgi
         {
